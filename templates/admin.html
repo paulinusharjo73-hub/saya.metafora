@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <title>Admin Dashboard</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Dashboard Moderasi</h1>
+
+      {% if not authenticated %}
+      <form method="POST">
+        <input
+          type="password"
+          name="password"
+          placeholder="Masukkan Password Admin"
+        />
+        <button type="submit">Masuk ke Dashboard</button>
+      </form>
+      {% else %}
+      <h3>Artikel Menunggu Verifikasi:</h3>
+      {% for post in posts %}
+      <div
+        class="card"
+        style="
+          border: 2px solid var(--gold);
+          padding: 15px;
+          margin-bottom: 10px;
+        "
+      >
+        <h4>{{ post['judul'] }}</h4>
+        <p>Oleh: {{ post['nama_penulis'] }}</p>
+        <a
+          href="{{ url_for('verify', id=post['id']) }}"
+          class="badge"
+          style="background: green; text-decoration: none"
+          >TERBITKAN (VERIFIKASI)</a
+        >
+        <a
+          href="{{ url_for('delete', id=post['id']) }}"
+          class="badge"
+          style="background: red; text-decoration: none"
+          >TOLAK/HAPUS</a
+        >
+      </div>
+      {% endfor %}
+      <p><a href="/">Kembali ke Beranda</a></p>
+      {% endif %}
+    </div>
+  </body>
+</html>

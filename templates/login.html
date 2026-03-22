@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Admin Login - Metafora.id</title>
+</head>
+<body>
+    <div class="container" style="max-width: 400px; margin-top: 100px; text-align: center;">
+        <h1 class="site-title">
+            <span class="part-black">META</span><span class="part-gold">FORA</span><span class="part-red">.id</span>
+        </h1>
+        <p>Login Khusus Admin</p>
+        
+        <form action="/login" method="POST" style="margin-top: 20px;">
+            <input type="password" name="password" placeholder="Masukkan Password Admin" required>
+            <button type="submit">MASUK</button>
+        </form>
+        
+        <br>
+        <a href="/" style="text-decoration: none; color: #888; font-size: 14px;">← Kembali ke Beranda</a>
+    </div>
+</body>
+</html>
