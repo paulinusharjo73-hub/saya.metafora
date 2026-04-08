@@ -4,13 +4,15 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+# Perbaikan: Menambah tanda kutip penutup pada secret_key
 app.secret_key = 'kunci_rahasia_metafora_id'
 
-# --- KONFIGURASI ---
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATABASE = os.path.join(BASE_DIR, 'metafora.db')
-UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static/uploads')
+# --- KONFIGURASI PATH UNTUK VERCEL ---
+# Folder /tmp adalah satu-satunya tempat yang boleh ditulis (diizinkan) oleh Vercel
+DATABASE = '/tmp/metafora.db' 
+UPLOAD_FOLDER = '/tmp/uploads'
 
+# Buat folder upload jika belum ada di folder /tmp
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
@@ -39,27 +41,27 @@ def init_db():
     conn.commit()
     conn.close()
 
+# Inisialisasi Database saat aplikasi dijalankan
+init_db()
+
 # --- ROUTES ---
 
 @app.route('/')
 def index():
     """Menampilkan artikel dengan fitur Pencarian"""
-    query = request.args.get('q') # Menangkap input dari kolom pencarian
+    query = request.args.get('q')
     conn = get_db_connection()
     
     if query:
-        # Mencari artikel yang judul atau kontennya mirip dengan kata kunci
         posts = conn.execute(
             "SELECT * FROM articles WHERE status = 'published' AND (judul LIKE ? OR konten LIKE ?) ORDER BY tanggal_buat DESC",
             ('%' + query + '%', '%' + query + '%')
         ).fetchall()
     else:
-        # Tampilan normal jika tidak ada pencarian
         posts = conn.execute("SELECT * FROM articles WHERE status = 'published' ORDER BY tanggal_buat DESC").fetchall()
     
     conn.close()
     
-    # Inisialisasi session agar tidak error di HTML
     if 'my_articles' not in session:
         session['my_articles'] = []
         
@@ -89,7 +91,6 @@ def submit():
     conn.commit()
     conn.close()
 
-    # LOGIKA KEPEMILIKAN
     if 'my_articles' not in session:
         session['my_articles'] = []
     
@@ -139,14 +140,11 @@ def delete(id):
 
     return redirect(url_for('index'))
 
-if __name__ == '__main__':
-    # Menjalankan inisialisasi database saat aplikasi dimulai
-    init_db()
-    
-    # Mengambil PORT dari environment variable (penting untuk hosting)
-    # Jika tidak ada, default ke port 5000
+# --- PENTING UNTUK VERCEL ---
+# Variabel 'app' harus diekspor agar dikenali oleh Vercel Serverless
+app = app 
+
+if __name__ == "__main__":
+    # Pengaturan untuk menjalankan secara lokal (saat kamu test di laptop sendiri)
     port = int(os.environ.get("PORT", 5000))
-    
-    # host='0.0.0.0' membuat web bisa diakses dari luar server hosting
-    # debug=False sebaiknya dimatikan saat sudah online (Production)
-    app.run(host='0.0.0.0', port=port, debug=False)
+    app.run(host='0.0.0.0', port=port, debug=True)
