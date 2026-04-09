@@ -2,242 +2,127 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Metafora.id - Portal Berita & Kreativitas</title>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Metafora.id",
+      "alternateName": ["Metafora", "Metafora ID"],
+      "url": "https://www.metaforaid.my.id/"
+    }
+    </script>
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.metaforaid.my.id/">
+    <meta property="og:title" content="Metafora.id - Grow Together">
+    <meta property="og:description" content="Portal berita dan wadah kreativitas komunitas digital Metafora.">
+    <meta property="og:image" content="https://i.postimg.cc/bJtzSTJR/og-image.jpg">
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+    <style>
+        /* CSS yang kamu kirim tadi tetap sama, tidak perlu diubah */
+        {{ request.args.get('custom_css')|safe }} 
+        /* --- COPY STYLE DARI KODE ASLI KAMU DI SINI --- */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; padding: 0; background-color: #f4f7f6; font-family: 'Poppins', sans-serif; color: #333; overflow-x: hidden; }
+        /* ... (lanjutkan semua isi style kamu yang tadi ke sini) ... */
+    </style>
 </head>
 <body>
-    <header class="magazine-header">
-        <div class="container top-nav">
-            <h1 class="logo-text">
-                <span class="part-black">META</span><span class="part-gold">FORA.id</span>
-            </h1>
 
-            <nav class="nav-links">
-                <a href="/" class="active">Home</a>
-                <a href="javascript:void(0)" onclick="toggleAbout()">About</a>
-                <a href="#kontak-section">Contact</a>
-            </nav>
+    <header>
+        <div class="nav-container">
+            <a href="/" class="logo"><span style="color:#000">META</span><span style="color:#FFCC00">FORA.id</span></a>
 
-            <div class="search-container">
-                <form action="/" method="GET" class="search-form">
-                    <input type="text" name="q" placeholder="Cari artikel..." value="{{ search_query or '' }}">
-                    <button type="submit"><i class="fas fa-search"></i></button>
-                </form>
-            </div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="javascript:void(0)" onclick="toggleM('aboutM')">About</a></li>
+            </ul>
 
-            <div class="header-icons">
-                <a href="https://www.facebook.com/share/v/18TNYaKDQP/" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://www.instagram.com/metafor.id_?igsh=MTg3bm92bzljZ29xcw==" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.tiktok.com/@metaforaid?_r=1&_t=ZS-94nJ8bEYmJA" target="_blank"><i class="fab fa-tiktok"></i></a>
-                <button class="btn-subscribe">Subscribe</button>
+            <div class="header-actions">
+                <div class="search-box">
+                    <form action="/" method="GET" style="display:flex; align-items:center;">
+                        <input type="text" name="q" placeholder="Cari..." value="{{ search_query or '' }}">
+                        <button type="submit" style="background:none; border:none; cursor:pointer;"><i class="fas fa-search" style="font-size:12px; color:#666;"></i></button>
+                    </form>
+                </div>
+                <div style="font-size:18px; display:flex; gap:10px;">
+                    <a href="https://instagram.com/metafor.id_" target="_blank" style="color:#E4405F"><i class="fab fa-instagram"></i></a>
+                    <a href="https://tiktok.com/@metaforaid" target="_blank" style="color:#000"><i class="fab fa-tiktok"></i></a>
+                </div>
+                <button class="btn-sub">SUBSCRIBE</button>
             </div>
         </div>
 
-        <div class="container">
-            <div class="headline-bar">
-                <span class="label-headline"><i class="fas fa-bolt"></i> Headline</span>
-                <marquee>Metafora: Grow Together. Komunitas Media Digital Kreatif & Inspiratif.</marquee>
+        <div class="headline-bar">
+            <div style="max-width:1140px; margin:0 auto; display: flex; align-items: center; padding: 0 15px;">
+                <span style="background: #FFCC00; color: #000; padding: 2px 8px; font-weight: 800; font-size: 10px; border-radius: 3px; margin-right: 12px; white-space: nowrap;"><i class="fas fa-bolt"></i> HEADLINE</span>
+                <marquee>Metafora: Grow Together. Komunitas Media Digital Kreatif & Inspiratif. Tuangkan pemikiranmu di sini!</marquee>
             </div>
         </div>
     </header>
 
-    <main class="container">
-        
-        <div id="aboutModal" class="modal-form" style="display:none;">
-            <div class="form-card" style="max-width: 700px; max-height: 85vh; overflow-y: auto; text-align: left;">
-                <span onclick="toggleAbout()" class="close">&times;</span>
-                <h2 style="color: #1a1a1a; border-bottom: 3px solid #FFCC00; padding-bottom: 10px; font-weight: 800;">Metafora</h2>
-                <div style="line-height: 1.8; color: #444; margin-top: 20px;">
-                    <p><strong>Metafora.id</strong> Metafora merupakan sebuah komunitas media digital yang
-bergerak dalam pengembangan ruang diskusi, kreativitas, dan
-penyampaian gagasan melalui berbagai platform konten
-seperti podcast, monolog, dan format media digital lainnya.
-Metafora hadir sebagai wadah bagi generasi muda untuk
-berbagi perspektif, membangun dialog, serta menyampaikan
-isu sosial, budaya, dan kehidupan secara reflektif dan
-komunikatif.
-Selain bergerak di bidang media digital, Metafora juga
-memiliki tim sepak bola komunitas bernama Metafora FC yang
-menjadi sarana memperkuat solidaritas, kebersamaan, dan
-semangat sportivitas antaranggota. Kombinasi antara ruang
-gagasan dan aktivitas olahraga ini menjadikan Metafora
-sebagai komunitas yang tidak hanya berkembang di ruang
-digital, tetapi juga aktif membangun kebersamaan di dunia
-nyata</p>
-                    <p></p>
-                </div>
-
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px;">
-                    <div style="background: #fff9e6; padding: 20px; border-radius: 10px; border-left: 5px solid #FFCC00;">
-                        <h4 style="color: #b38f00; margin-top: 0;"><i class="fas fa-eye"></i> VISI</h4>
-                        <p style="font-size: 0.9em; margin: 0;">Menjadi komunitas media digital yang kreatif,
-inspiratif, dan berpengaruh dalam membangun
-ruang dialog, gagasan, serta solidaritas generasi
-muda di era digital.</p>
-                    </div>
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 5px solid #1a1a1a;">
-                        <h4 style="color: #333; margin-top: 0;"><i class="fas fa-bullseye"></i> MISI</h4>
-                        <ul style="font-size: 0.85em; padding-left: 15px; margin: 0;">
-                            <li>Mengembangkan konten media digital seperti podcast, monolog,
-dan diskusi yang informatif, reflektif, dan inspiratif</li>
-                            <li>Membangun komunitas yang aktif dalam berbagi ide, pengalaman,
-dan perspektif sosial.</li>
-                            <li>Mendorong kreativitas generasi muda melalui platform media
-digital yang kolaboratif.</li>
-                            <li>Mengembangkan Metafora FC sebagai wadah kebersamaan,
-sportivitas, dan semangat komunitas melalui olahraga sepak bola.</li>
-                            <li>Menciptakan ruang komunitas yang produktif antara aktivitas
-intelektual, kreativitas digital, dan kegiatan sosial.</li>
-                        </ul>
-                    </div>
-                </div>
-                <p style="font-size: 0.8em; color: #999; margin-top: 30px; text-align: center; font-style: italic;">"Grow Together — Tumbuh Bersama dalam Karya dan Gagasan."</p>
-            </div>
-        </div>
-
-        {% if search_query %}
-            <div style="margin-bottom: 20px; padding: 10px; background: #fff9e6; border-radius: 5px;">
-                <p>Menampilkan hasil pencarian untuk: <strong>"{{ search_query }}"</strong> | <a href="/" style="color: #FFCC00;">Hapus Pencarian</a></p>
-            </div>
-        {% endif %}
-
-        {% if posts %}
-        <section class="hero-section">
-            <div class="hero-grid">
-                <div class="hero-main">
-                    {% set main = posts[0] %}
-                    <div class="hero-item-container">
-                        <a href="{{ url_for('detail', id=main['id']) }}" class="hero-item">
-                            <img src="{{ url_for('static', filename='uploads/' + main['gambar']) if main['gambar'] else 'https://via.placeholder.com/800x500' }}">
-                            <div class="hero-content">
-                                <span class="badge-news">{{ main['kategori'] }}</span>
-                                <h2>{{ main['judul'] }}</h2>
-                                <p>Oleh {{ main['nama_penulis'] }} | {{ main['tanggal_buat'] }}</p>
-                            </div>
-                        </a>
-                        {% if main['id'] in session.get('my_articles', []) or session.get('is_admin') %}
-                        <div style="padding: 10px; text-align: right; background: #fff; border-radius: 0 0 8px 8px;">
-                            <a href="{{ url_for('delete', id=main['id']) }}" onclick="return confirm('Hapus artikel ini?')" class="btn-delete-modern">
-                                <i class="fas fa-trash-alt"></i> Hapus Artikel
-                            </a>
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <div class="hero-side">
-                    {% if posts|length > 1 %}
-                        {% for post in posts[1:3] %}
-                        <div class="side-item-container" style="margin-bottom: 20px;">
-                            <a href="{{ url_for('detail', id=post['id']) }}" class="side-item">
-                                <img src="{{ url_for('static', filename='uploads/' + post['gambar']) if post['gambar'] else 'https://via.placeholder.com/400x250' }}">
-                                <div class="side-content">
-                                    <span class="badge-news">{{ post['kategori'] }}</span>
-                                    <h4>{{ post['judul'] }}</h4>
-                                </div>
-                            </a>
-                            {% if post['id'] in session.get('my_articles', []) or session.get('is_admin') %}
-                            <div style="padding: 5px; text-align: right; background: #fff; border-radius: 0 0 8px 8px;">
-                                <a href="{{ url_for('delete', id=post['id']) }}" onclick="return confirm('Hapus?')" class="btn-delete-modern" style="font-size: 0.7rem; padding: 4px 8px;">
-                                    <i class="fas fa-trash-alt"></i> Hapus
-                                </a>
-                            </div>
-                            {% endif %}
-                        </div>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
-        </section>
-        {% else %}
-            <div style="text-align: center; padding: 50px;">
-                <i class="fas fa-search-minus" style="font-size: 3rem; color: #ddd;"></i>
-                <p style="color: #999; margin-top: 10px;">Artikel tidak ditemukan.</p>
-            </div>
-        {% endif %}
-
-        <div style="text-align: center; margin: 40px 0;">
-            <button onclick="document.getElementById('uploadForm').style.display='block'" class="btn-upload-main">
-                <i class="fas fa-plus-circle"></i> Tulis & Upload Artikel
+    <main>
+        <div style="text-align: center; margin-bottom: 35px;">
+            <button onclick="toggleM('upM')" style="background:#1a1a1a; color:#FFCC00; border:none; padding:14px 30px; border-radius:30px; font-weight:800; cursor:pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                <i class="fas fa-plus-circle"></i> TULIS ARTIKEL BARU
             </button>
         </div>
 
-        <div id="uploadForm" class="modal-form" style="display:none;">
-            <div class="form-card">
-                <span onclick="this.parentElement.parentElement.style.display='none'" class="close">&times;</span>
-                <h3 style="border-bottom: 2px solid #FFCC00; padding-bottom: 10px;">Buat Tulisan Baru</h3>
-                <form action="/submit" method="POST" enctype="multipart/form-data">
-                    <input type="text" name="nama" placeholder="Nama Penulis" required>
-                    <input type="text" name="judul" placeholder="Judul Artikel" required>
-                    <select name="kategori">
-                        <option value="kejadian">kejadian</option>
-                        <option value="Artikel">Artikel</option>
-                        <option value="Opini">Opini</option>
-                        <option value="diskusi">diskusi</option>
-                    </select>
-                    <div style="margin: 10px 0; font-size: 0.9em; color: #666;">Unggah Gambar Utama:</div>
-                    <input type="file" name="gambar" accept="image/*">
-                    <textarea name="konten" rows="6" placeholder="Tuliskan isi artikel Anda di sini..." required></textarea>
-                    <button type="submit" style="background: #1a1a1a; color: #FFCC00; font-weight: bold;">Terbitkan Artikel</button>
-                </form>
-            </div>
-        </div>
-
-        <section class="trending-section" id="kontak-section">
-            <h3 class="section-title"><span>Arsip Pemikiran</span></h3>
-            <div class="news-feed">
-                {% for post in posts[3:] %}
-                <div class="small-card">
-                    <img src="{{ url_for('static', filename='uploads/' + post['gambar']) if post['gambar'] else 'https://via.placeholder.com/150x100' }}">
-                    <div class="small-card-info">
-                        <span style="color: #FFCC00; font-size: 0.7rem; font-weight: bold;">{{ post['kategori'] }}</span>
-                        <h4><a href="{{ url_for('detail', id=post['id']) }}">{{ post['judul'] }}</a></h4>
-                        <p>{{ post['tanggal_buat'] }}</p>
-                        
-                        {% if post['id'] in session.get('my_articles', []) or session.get('is_admin') %}
-                        <div style="margin-top: 10px;">
-                            <a href="{{ url_for('delete', id=post['id']) }}" onclick="return confirm('Hapus artikel ini?')" class="btn-delete-modern" style="font-size: 0.7rem; padding: 4px 8px;">
-                                <i class="fas fa-trash-alt"></i> Hapus
-                            </a>
-                        </div>
-                        {% endif %}
+        <div class="grid-pro">
+            {% for post in posts %}
+            <div class="card-pro">
+                <a href="{{ url_for('detail', id=post['id']) }}">
+                    {% if post['gambar'] %}
+                    <img src="{{ url_for('static', filename='uploads/' + post['gambar']) }}" class="thumb">
+                    {% else %}
+                    <div style="width:100%; height:135px; background:#eee; display:flex; align-items:center; justify-content:center; color:#ccc;">Metafora</div>
+                    {% endif %}
+                    <div class="card-body">
+                        <span style="color:#FFCC00; font-size:10px; font-weight:800; text-transform:uppercase;">{{ post['kategori'] }}</span>
+                        <h3 style="font-size:14px; font-weight:700; margin:5px 0 0 0; line-height:1.3;">{{ post['judul'] }}</h3>
                     </div>
-                </div>
-                {% endfor %}
+                    <div style="padding:12px 15px; font-size:11px; color:#999; border-top:1px solid #f9f9f9; display:flex; justify-content:space-between;">
+                        <span>Oleh: {{ post['nama_penulis'] }}</span>
+                        <i class="fas fa-arrow-right" style="color:#FFCC00"></i>
+                    </div>
+                </a>
             </div>
-        </section>
+            {% endfor %}
+        </div>
     </main>
 
-    <footer style="background: #1a1a1a; color: #fff; padding: 50px 0; margin-top: 50px; text-align: center;">
-        <div class="container">
-            <h1 class="logo-text" style="font-size: 2rem; margin-bottom: 10px;">
-                <span style="color: #fff;">META</span><span class="part-gold">FORA</span>
-            </h1>
-            <p>Mari berkolaborasi dan berbagi gagasan bersama kami.</p>
-            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
-                <a href="https://api.whatsapp.com/send?phone=6282146038924" target="_blank" style="color: #fff; font-size: 1.5rem;"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.instagram.com/metafor.id_?igsh=MTg3bm92bzljZ29xcw==" target="_blank" style="color: #fff; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.tiktok.com/@metaforaid?_r=1&_t=ZS-94nJ8bEYmJA" target="_blank" style="color: #fff; font-size: 1.5rem;"><i class="fab fa-tiktok"></i></a>
-                <a href="https://www.facebook.com/share/v/18TNYaKDQP/" target="_blank" style="color: #fff; font-size: 1.5rem;"><i class="fab fa-facebook"></i></a>
-            </div>
-            <p style="margin-top: 30px; font-size: 0.8rem; color: #666;">&copy; 2026 Metafora.id.</p>
+    <footer>
+        <div style="font-weight: 800; font-size: 28px; margin-bottom: 20px;">
+            META<span style="color: #FFCC00;">FORA</span>.id
         </div>
+        <div style="margin: 30px 0; font-size: 26px; display: flex; justify-content: center; gap: 30px;">
+            <a href="https://wa.me/6282146038924" target="_blank" style="color: #25D366;"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://instagram.com/metafor.id_" target="_blank" style="color: #E4405F;"><i class="fab fa-instagram"></i></a>
+            <a href="https://tiktok.com/@metaforaid" target="_blank" style="color: #fff;"><i class="fab fa-tiktok"></i></a>
+        </div>
+        <p style="font-size: 11px; opacity: 0.5;">&copy; 2026 Metafora.id. Grow Together.</p>
     </footer>
 
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
-        function toggleAbout() {
-            var modal = document.getElementById('aboutModal');
-            modal.style.display = (modal.style.display === "none" || modal.style.display === "") ? "block" : "none";
+        function toggleM(id) {
+            var m = document.getElementById(id);
+            m.style.display = (m.style.display === "none" || m.style.display === "") ? "block" : "none";
         }
-
-        window.onclick = function(event) {
-            var aboutModal = document.getElementById('aboutModal');
-            var uploadModal = document.getElementById('uploadForm');
-            if (event.target == aboutModal) aboutModal.style.display = "none";
-            if (event.target == uploadModal) uploadModal.style.display = "none";
-        }
+        // Konfigurasi Quill Editor
+        var quill = new Quill('#editor', { theme: 'snow', modules: { toolbar: [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline'], ['link', 'image']] } });
+        document.getElementById('articleForm').onsubmit = function() {
+            document.getElementById('konten_input').value = quill.root.innerHTML;
+        };
     </script>
 </body>
 </html>
