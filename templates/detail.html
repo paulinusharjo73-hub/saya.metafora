@@ -2,83 +2,137 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <title>{{ post['judul'] }} - Metafora.id</title>
+
+    <style>
+        /* --- STYLE TETAP SAMA SEPERTI KODE KAMU --- */
+        body { font-family: 'Poppins', sans-serif; background-color: #fcfcfc; color: #1a1a1a; margin: 0; padding: 0; line-height: 1.6; }
+        .article-container { max-width: 800px; margin: 0 auto; padding: 15px; }
+        .btn-back { display: inline-flex; align-items: center; text-decoration: none; color: #888; font-size: 12px; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        .full-post { background: #fff; padding: 30px 20px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
+        .category-badge { display: inline-block; background: #FFCC00; color: #000; padding: 3px 10px; border-radius: 4px; font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; }
+        .post-title { font-size: 26px; font-weight: 800; line-height: 1.3; margin: 0 0 15px 0; color: #000; }
+        .meta-info { font-size: 12px; color: #999; margin-bottom: 25px; display: flex; justify-content: space-between; border-bottom: 1px solid #f1f1f1; padding-bottom: 15px; }
+        .featured-image { width: 100%; border-radius: 10px; margin-bottom: 25px; object-fit: cover; }
+
+        /* TYPOGRAPHY ARTIKEL */
+        .article-body { font-family: 'Lora', serif; font-size: 18px; line-height: 1.9; color: #2c3e50; word-wrap: break-word; }
+        .article-body p:first-of-type::first-letter { font-size: 50px; font-weight: 800; float: left; color: #FFCC00; line-height: 1; margin-right: 10px; margin-top: 5px; }
+        .article-body blockquote { border-left: 5px solid #FFCC00; padding: 15px 20px; background: #f9f9f9; font-style: italic; margin: 30px 0; color: #555; }
+        
+        /* INTERAKSI & KOMENTAR */
+        .interaction-box { margin-top: 30px; padding-top: 20px; border-top: 2px solid #f1f1f1; }
+        .like-btn { background: #f9f9f9; border: 1px solid #eee; padding: 10px 20px; border-radius: 30px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; text-decoration: none; color: inherit; }
+        .like-btn:hover { background: #fff1f1; border-color: #ff4d4d; color: #ff4d4d; }
+        .comment-card { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #f1f1f1; border-left: 4px solid #FFCC00; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .comment-form { background: #f9f9f9; padding: 20px; border-radius: 15px; margin-top: 25px; }
+        .comment-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; font-family: 'Poppins', sans-serif; outline: none; }
+        .comment-btn { background: #1a1a1a; color: #FFCC00; border: none; padding: 12px 25px; border-radius: 8px; font-weight: 800; cursor: pointer; width: 100%; transition: 0.3s; }
+
+        /* SOSIAL MEDIA */
+        .social-footer-box { margin-top: 40px; padding: 20px; background: #f9f9f9; border-radius: 12px; text-align: center; }
+        .social-grid { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .soc-btn { text-decoration: none; color: white; padding: 15px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; transition: 0.3s; }
+        .wa-bg { background: #25D366; } .tk-bg { background: #000000; } .ig-bg { background: #E1306C; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <a href="/" class="btn-back">← Kembali ke Beranda</a>
+
+    <div class="article-container">
+        <a href="/" class="btn-back"><i class="fas fa-chevron-left"></i> Kembali</a>
 
         <article class="full-post">
-            <h1 class="site-title">
-                <span class="part-black">META</span><span class="part-gold">FORA</span><span class="part-gold">.id</span>
-            </h1>
-            
-            <p class="subtitle">
-                {{ post['kategori'] }} | Oleh: {{ post['nama_penulis'] }} <br>
-                <small style="color: #666; font-style: normal;">Diterbitkan: {{ post['tanggal_buat'] }}</small>
-            </p>
+            <span class="category-badge">{{ post['kategori'] }}</span>
+            <h1 class="post-title">{{ post['judul'] }}</h1>
 
-            <div class="content-text" style="white-space: pre-wrap; margin-bottom: 30px; line-height: 1.8; color: #333; font-size: 1.1em;">
-                {{ post['konten'] }}
+            <div class="meta-info">
+                <span>Oleh <strong>{{ post['nama_penulis'] }}</strong></span>
+                <span>{{ post['tanggal_buat'] }}</span>
             </div>
 
             {% if post['gambar'] %}
-            <div class="image-container" style="text-align: center; margin-bottom: 40px;">
-                <img src="{{ url_for('static', filename='uploads/' + post['gambar']) }}" style="max-width: 100%; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-            </div>
+            <img src="{{ url_for('static', filename='uploads/' + post['gambar']) }}" class="featured-image">
             {% endif %}
 
-            <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
-<div class="social-footer" style="margin-top: 50px; padding: 30px; background: #fff; border: 1px solid #eee; border-radius: 15px; text-align: center;">
-    <p style="font-weight: 700; color: #333; margin-bottom: 20px; font-size: 1.1em;">Ikuti & Hubungi Metafora.id</p>
-    
-    <div class="social-links" style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-        
-        <a href="https://api.whatsapp.com/send?phone=6282146038924&text=Halo%20Admin%20Metafora.id,%20saya%20ingin%20bertanya%20mengenai..." 
-           target="_blank" 
-           class="soc-btn wa" 
-           style="text-decoration: none; color: white; background: #25D366; padding: 12px 20px; border-radius: 10px; display: flex; align-items: center; gap: 10px; min-width: 140px; justify-content: center;">
-            <i class="fab fa-whatsapp" style="font-size: 1.4em;"></i>
-            <span>WhatsApp</span>
-        </a>
+            <div class="article-body">
+                {{ post['konten'] | safe }}
+            </div>
 
-        <a href="https://www.tiktok.com/@metaforaid?_r=1&_t=ZS-94nJ8bEYmJA" target="_blank" class="soc-btn tiktok" style="text-decoration: none; color: white; background: #000000; padding: 12px 20px; border-radius: 10px; display: flex; align-items: center; gap: 10px; min-width: 140px; justify-content: center;">
-            <i class="fab fa-tiktok" style="font-size: 1.4em;"></i>
-            <span>TikTok</span>
-        </a>
+            <div class="interaction-box">
+                <a href="{{ url_for('like_post', id=post['id']) }}" class="like-btn">
+                    <i class="fas fa-heart" style="color: #ff4d4d;"></i> 
+                    LIKE ({{ post['likes'] or 0 }})
+                </a>
+            </div>
 
-        <a href="https://www.instagram.com/metafor.id_?igsh=MTg3bm92bzljZ29xcw==" target="_blank" class="soc-btn ig" style="text-decoration: none; color: white; background: #E1306C; padding: 12px 20px; border-radius: 10px; display: flex; align-items: center; gap: 10px; min-width: 140px; justify-content: center;">
-            <i class="fab fa-instagram" style="font-size: 1.4em;"></i>
-            <span>Instagram</span>
-        </a>
-    </div>
-</div>
+            <div class="comment-section" style="margin-top: 40px;">
+                <h3 style="font-weight: 800; font-size: 18px; border-bottom: 3px solid #FFCC00; display: inline-block; margin-bottom: 20px;">
+                    Diskusi ({{ comments|length if comments else 0 }})
+                </h3>
 
-           {% if post['id'] in session.get('my_articles', []) or session.get('is_admin') %}
-<div class="article-controls" style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #eee; display: flex; justify-content: flex-end;">
-    <a href="{{ url_for('delete', id=post['id']) }}" 
-       onclick="return confirm('Apakah Anda yakin ingin menghapus artikel ini secara permanen?')" 
-       class="btn-delete-modern">
-        <i class="fas fa-trash-alt"></i> Hapus Artikel
-    </a>
-</div>
-{% endif %}
+                <div class="comment-list">
+                    {% if comments %}
+                        {% for comment in comments %}
+                        <div class="comment-card">
+                            <div style="display: flex; align-items: flex-start; gap: 10px;">
+                                <div style="background: #FFCC00; color: #000; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;">
+                                    {{ comment['nama'][0] | upper }}
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <strong style="font-size: 14px; color: #1a1a1a;">{{ comment['nama'] }}</strong>
+                                        <small style="font-size: 10px; color: #bbb;">{{ comment['tanggal_buat'] }}</small>
+                                    </div>
+                                    <p style="margin: 5px 0 0 0; font-size: 13px; color: #555; line-height: 1.5;">{{ comment['pesan'] }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div style="text-align: center; padding: 30px; background: #f9f9f9; border-radius: 12px; border: 2px dashed #eee;">
+                            <p style="font-size: 12px; color: #999; margin: 0;">Belum ada komentar. Jadilah yang pertama!</p>
+                        </div>
+                    {% endif %}
+                </div>
 
+                <div class="comment-form">
+                    <p style="font-weight: 800; font-size: 14px; margin-bottom: 15px;"><i class="fas fa-pen-nib"></i> Tulis Komentar</p>
+                    <form action="{{ url_for('add_comment', id=post['id']) }}" method="POST">
+                        <input type="text" name="nama_komentar" class="comment-input" placeholder="Nama Anda" required>
+                        <textarea name="pesan_komentar" class="comment-input" style="height: 100px; resize: none;" placeholder="Tulis komentar kamu di sini..." required></textarea>
+                        <button type="submit" class="comment-btn">KIRIM KOMENTAR <i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="social-footer-box">
+                <p style="font-size: 13px; font-weight: 700; margin-bottom: 15px; color: #555;">Hubungi & Ikuti Kami</p>
+                <div class="social-grid">
+                    <a href="https://wa.me/6282146038924" target="_blank" class="soc-btn wa-bg"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.tiktok.com/@metaforaid" target="_blank" class="soc-btn tk-bg"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.instagram.com/metafor.id_" target="_blank" class="soc-btn ig-bg"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; text-align: center;">
+                {% if session.get('is_admin') or post['id'] in session.get('my_articles', []) %}
+                <a href="{{ url_for('delete', id=post['id']) }}" 
+                   onclick="return confirm('Yakin mau hapus artikel ini?')"
+                   style="color: #ff4d4d; text-decoration: none; font-weight: 700; font-size: 11px; border: 1px solid #ff4d4d; padding: 6px 18px; border-radius: 20px; display: inline-block;">
+                    <i class="fas fa-trash-alt"></i> Hapus Artikel
+                </a>
+                {% endif %}
+            </div>
         </article>
-    </div>
 
-    <style>
-        .soc-btn {
-            transition: all 0.3s ease;
-        }
-        .soc-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            opacity: 0.9;
-        }
-    </style>
+        <div class="footer-logo">
+             <h2>META<span style="color: #FFCC00;">FORA</span>.id</h2>
+             <p style="font-size: 11px; color: #bbb; margin-top: 5px;">Grow Together — 2026</p>
+        </div>
+    </div>
 </body>
 </html>
