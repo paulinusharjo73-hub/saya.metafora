@@ -1,54 +1,62 @@
 <!doctype html>
-<html>
-  <head>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
-    <title>Admin Dashboard</title>
-  </head>
-  <body>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Moderasi - Metafora.id</title>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #1a1a1a; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 40px auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        h1 { font-weight: 800; border-bottom: 4px solid #FFCC00; display: inline-block; margin-bottom: 25px; color: #000; }
+        .card { background: #fff; border: 1px solid #eee; padding: 20px; border-radius: 12px; margin-bottom: 15px; transition: 0.3s; }
+        .card:hover { border-color: #FFCC00; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .card h4 { margin: 0 0 5px 0; font-weight: 700; color: #000; }
+        .badge { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; color: white; text-decoration: none; font-weight: 700; font-size: 11px; text-transform: uppercase; transition: 0.3s; }
+        .btn-verify { background: #27ae60; }
+        .btn-verify:hover { background: #219150; transform: translateY(-2px); }
+        .btn-delete { background: #e74c3c; }
+        .btn-delete:hover { background: #c0392b; transform: translateY(-2px); }
+        .footer-links { text-align: center; margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; }
+        .footer-links a { text-decoration: none; font-weight: 600; transition: 0.3s; }
+    </style>
+</head>
+<body>
     <div class="container">
-      <h1>Dashboard Moderasi</h1>
+        <h1><i class="fas fa-tasks"></i> Moderasi Tulisan</h1>
+        <p style="color: #666; font-size: 14px;">Halo Admin, berikut adalah antrean tulisan yang perlu ditinjau (<strong>{{ posts|length }}</strong>):</p>
+        
+        <div style="margin-top: 30px;">
+            {% for post in posts %}
+            <div class="card">
+                <h4>{{ post['judul'] }}</h4>
+                <p style="font-size: 12px; color: #888; margin-bottom: 15px;">
+                    <i class="fas fa-user"></i> {{ post['nama_penulis'] }} | 
+                    <i class="fas fa-tag"></i> {{ post['kategori'] }}
+                </p>
+                <div style="display: flex; gap: 10px;">
+                    <a href="{{ url_for('verify', id=post['id']) }}" class="badge btn-verify">
+                        <i class="fas fa-check-circle"></i> Terbitkan
+                    </a>
+                    <a href="{{ url_for('delete', id=post['id']) }}" class="badge btn-delete" onclick="return confirm('Yakin ingin menghapus tulisan ini secara permanen?')">
+                        <i class="fas fa-trash"></i> Hapus
+                    </a>
+                </div>
+            </div>
+            {% else %}
+            <div style="text-align: center; padding: 40px; background: #f9f9f9; border-radius: 12px; border: 2px dashed #ddd;">
+                <i class="fas fa-coffee" style="font-size: 30px; color: #ccc; margin-bottom: 10px;"></i>
+                <p style="color: #999; margin: 0; font-size: 14px;">Santai sejenak, belum ada tulisan baru yang masuk.</p>
+            </div>
+            {% endfor %}
+        </div>
 
-      {% if not authenticated %}
-      <form method="POST">
-        <input
-          type="password"
-          name="password"
-          placeholder="Masukkan Password Admin"
-        />
-        <button type="submit">Masuk ke Dashboard</button>
-      </form>
-      {% else %}
-      <h3>Artikel Menunggu Verifikasi:</h3>
-      {% for post in posts %}
-      <div
-        class="card"
-        style="
-          border: 2px solid var(--gold);
-          padding: 15px;
-          margin-bottom: 10px;
-        "
-      >
-        <h4>{{ post['judul'] }}</h4>
-        <p>Oleh: {{ post['nama_penulis'] }}</p>
-        <a
-          href="{{ url_for('verify', id=post['id']) }}"
-          class="badge"
-          style="background: green; text-decoration: none"
-          >TERBITKAN (VERIFIKASI)</a
-        >
-        <a
-          href="{{ url_for('delete', id=post['id']) }}"
-          class="badge"
-          style="background: red; text-decoration: none"
-          >TOLAK/HAPUS</a
-        >
-      </div>
-      {% endfor %}
-      <p><a href="/">Kembali ke Beranda</a></p>
-      {% endif %}
+        <div class="footer-links">
+            <a href="/" style="color: #666; font-size: 12px;"><i class="fas fa-home"></i> Beranda</a>
+            <span style="color: #ddd; margin: 0 10px;">|</span>
+            <a href="/logout" style="color: #e74c3c; font-size: 12px;"><i class="fas fa-sign-out-alt"></i> Logout Admin</a>
+        </div>
     </div>
-  </body>
+</body>
 </html>
